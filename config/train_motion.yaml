@@ -1,0 +1,90 @@
+experiment_name: mdgd
+data_path: &data_path data
+epoch: &epoch 15
+seed: 3407
+
+dataloader:
+  num_workers: &num_workers 0
+  train_loader:
+    num_workers: *num_workers
+    batch_size: 1
+  val_loader:
+    num_workers: *num_workers
+    batch_size: 1
+  test_loader:
+    num_workers: *num_workers
+    batch_size: 1
+
+dataset:
+  name: &dataset_name Scene
+  train_set:
+    name: Cache
+    data_path: *data_path
+    cache_folder: cache
+    total_epoch: 150
+  val_set:
+    name: *dataset_name
+    data_path: *data_path
+    split: val
+    ird: 0.07
+    point_sample: False
+    frame_sample: False
+    processes: 6
+  test_set:
+    name: *dataset_name
+    data_path: *data_path
+    split: test
+    ird: 0.07
+    point_sample: False
+    frame_sample: False
+    processes: 6
+
+model:
+  name: MVRLIT
+  overlap_cfg:
+    name: MatchDistanceNet
+    dim: 64
+    factor: 4
+    layer_num: 3
+  at_cfg:
+    name: MAIT
+    rotation_dim: 64
+    translation_dim: 64
+    confidence_dim: 64
+    repeat_num: 4
+    abs_num: 2
+    rel_num: 1
+  k: &k 10
+  graph_mode: topk
+
+loss:
+  name: HybridLoss
+  loss_args:
+    rotation_cfg:
+      weight: 1
+      name: IterativeRelativeRotationLoss
+      rel_weight: 1.0
+      factor: 0.8
+    translation_cfg:
+      weight: 0.2
+      name: IterativeRelativeTranslationLoss
+      rel_weight: 1.0
+      coarse_weight: 1.0
+      factor: 0.8
+
+optimizer:
+  name: AdamW
+  lr: 1.0e-3
+  weight_decay: 1.0e-6
+
+lr_scheduler:
+  name: Cosine_Schedule_With_Warmup
+  num_warmup_steps: 0
+  num_training_steps: 2250
+
+interval: 50
+
+eval:
+  err2: 0.2
+  ecdf: False
+  k: *k

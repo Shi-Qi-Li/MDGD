@@ -1,0 +1,42 @@
+experiment_name: eth
+data_path: &data_path data
+seed: 3407
+
+dataloader:
+  test_loader:
+    num_workers: 0
+    batch_size: 1
+
+dataset:
+  name: &dataset_name Scene
+  test_set:
+    name: *dataset_name
+    data_path: *data_path
+    split: eth
+    ird: 0.2
+    point_sample: False
+    frame_sample: False
+    processes: 6
+
+model:
+  name: MVRLIT
+  overlap_cfg:
+    name: MatchDistanceNet
+    dim: 64
+    factor: 4
+    layer_num: 3
+  at_cfg:
+    name: MAIT
+    rotation_dim: 64
+    translation_dim: 64
+    confidence_dim: 64
+    repeat_num: 4
+    abs_num: 2
+    rel_num: 1
+  k: &k 6
+  graph_mode: topk
+
+eval:
+  err2: 0.5
+  ecdf: False
+  k: *k

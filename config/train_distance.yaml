@@ -1,0 +1,62 @@
+experiment_name: overlap
+data_path: &data_path data
+epoch: &epoch 1
+seed: 3407
+
+dataloader:
+  num_workers: &num_workers 0
+  train_loader:
+    num_workers: *num_workers
+    batch_size: 1
+  val_loader:
+    num_workers: *num_workers
+    batch_size: 1
+  test_loader:
+    num_workers: *num_workers
+    batch_size: 1
+
+dataset:
+  name: &dataset_name Scene
+  train_set:
+    name: Cache
+    data_path: *data_path
+    cache_folder: cache
+    total_epoch: 150
+  val_set:
+    name: *dataset_name
+    data_path: *data_path
+    split: val
+    ird: 0.07
+    point_sample: False
+    frame_sample: False
+  test_set:
+    name: *dataset_name
+    data_path: *data_path
+    split: 3dmatch
+    ird: 0.07
+    point_sample: False
+    frame_sample: False
+
+model:
+  name: MatchDistanceNet
+  dim: 64
+  factor: 4
+  layer_num: 3
+
+loss:
+  name: OverlapLoss
+
+optimizer:
+  name: AdamW
+  lr: 1.0e-2
+  weight_decay: 1.0e-4
+
+lr_scheduler:
+  name: Cosine_Schedule_With_Warmup
+  num_warmup_steps: 0
+  num_training_steps: 150
+
+interval: 50
+
+eval:
+  k: 10
