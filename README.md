@@ -15,7 +15,7 @@ pip install -r requirements.txt
 Then, install the [knn_search](model/knn_search/README.md) and [graph_ops](model/graph_ops/README.md) in `./model`.
 
 ## Data Preparation
-The data can be found from [SGHR](https://github.com/WHU-USI3DV/SGHR).
+The data can be found from [SGHR](https://github.com/WHU-USI3DV/SGHR), the `.pkl` files can be found at [SGHR/train/pkls](https://github.com/WHU-USI3DV/SGHR/tree/master/train/pkls). Both our `train` and `val` folders correspond to the `3dmatch_train` in SGHR, we provide a [script](tools/move_val.sh) in `tools` to help move the subfolders.
 
 Please organize the data to `./data` following the example data structure as:
 ```
