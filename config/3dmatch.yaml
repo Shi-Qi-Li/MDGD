@@ -35,3 +35,8 @@ model:
     rel_num: 1
   k: &k 10
   graph_mode: topk
+
+eval:
+  err2: 0.2
+  ecdf: False
+  k: *k
