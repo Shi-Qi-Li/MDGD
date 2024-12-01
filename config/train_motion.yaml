@@ -86,5 +86,5 @@ interval: 50
 
 eval:
   err2: 0.2
-  ecdf: False
+  ecdf: True
   k: *k
